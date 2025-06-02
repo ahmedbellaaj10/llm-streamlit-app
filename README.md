@@ -1,100 +1,100 @@
 # 🧠 LLM Streamlit App with Ollama
 
-This project is a minimal local chat interface powered by [Streamlit](https://streamlit.io/) and [Ollama](https://ollama.com/), letting you run open-source LLMs like `mistral` entirely offline on your machine.
-
-It provides a clean and extendable structure for local experimentation with LLMs through a simple web UI.
+This project is a clean local chat interface powered by [Streamlit](https://streamlit.io/) and [Ollama](https://ollama.com/). It lets you run open-source LLMs like `mistral:7b` or `llama3` entirely offline through three flexible methods: local, Docker, or prebuilt image.
 
 ---
 
 ## 🚀 Features
 
-- ✅ Auto-starts Ollama and loads your selected model
-- ✅ Streamlit interface for prompt/response interaction
-- ✅ Environment-based configuration using `.env`
-- ✅ Clean project layout under `src/`
+- ✅ Streamlit UI for prompt-response chat
+- ✅ Class-based service abstraction
+- ✅ `.env` configuration
+- ✅ Docker support
+- ✅ Unit testing with `pytest`
 
 ---
 
 ## 📦 Requirements
 
-- Python 3.12+ (recommended, works on 3.8+)
-- [Ollama](https://ollama.com/download) installed and accessible in your terminal
-- `mistral` model pulled locally:
-    ```bash
-    ollama pull mistral
-    ```
+- Python 3.8+ (for local usage)
+- [Ollama installed](https://ollama.com/download) and accessible in terminal
+- Docker + Docker Compose (for containerized usage)
+- Ollama model pulled locally (e.g., `mistral:7b`)
+
+```bash
+ollama pull mistral:7b
+```
 
 ---
 
-## 🛠️ Installation Guide
+## 🛠️ Setup Options
 
-### 1. Clone the Repository
+### 🔹 Option 1: Run Locally
+
+#### 1. Clone the repository
 
 ```bash
 git clone https://github.com/ahmedbellaaj10/llm-streamlit-app.git
 cd llm-streamlit-app
 ```
 
----
-
-### 2. Install `uv` (Fast Python Package Manager)
-
-`uv` is a Rust-based package manager that replaces pip, venv, and pip-tools.
-
-#### 🔧 Windows (PowerShell)
-```powershell
-irm https://astral.sh/uv/install.ps1 | iex
-```
-
-#### 💻 macOS/Linux
-```bash
-curl -Ls https://astral.sh/uv/install.sh | sh
-```
-
-Test it:
-```bash
-uv --version
-```
-
-If not available, ensure the installation path (e.g., `~/.local/bin`) is in your system `PATH`.
-
----
-
-### 3. Setup the Virtual Environment and Install Dependencies
-
-```bash
-uv venv
-# Activate it
-. .venv/Scripts/Activate.ps1   # Windows PowerShell
-
-# or
-source .venv/bin/activate        # macOS/Linux
-
-# Install Python packages
-uv pip install -r requirements.txt
-```
-
----
-
-### 4. Create the `.env` File
-
-A sample file `.env.example` is provided. You can copy it:
+#### 2. Create and configure `.env`
 
 ```bash
 cp .env.example .env
 ```
 
-Then adjust it if needed.
+Set values like:
 
----
+```
+OLLAMA_MODEL_NAME=mistral:7b
+OLLAMA_URL=http://localhost:11434
+```
 
-### 5. Run the App
+#### 3.Make sure Ollama is running:
+```bash
+ollama run mistral:7b
+```
+
+#### 4. Install dependencies & run the app
 
 ```bash
+python -m venv .venv
+source .venv/bin/activate      # or .venv\Scripts\Activate.ps1 on Windows
+pip install -r requirements.txt
 streamlit run src/app.py
 ```
 
-Then go to [http://localhost:8501](http://localhost:8501)
+Make sure Ollama is running:
+```bash
+ollama run mistral:7b
+```
+
+---
+
+### 🔹 Option 2: Run with Docker Compose
+
+Ensure Docker and Docker Compose are installed.
+
+```bash
+docker-compose up --build
+```
+
+This will:
+- Start the Ollama server
+- Start the Streamlit app at [http://localhost:8501](http://localhost:8501)
+
+---
+
+### 🔹 Option 3: Run with Prebuilt Docker Image (Coming Soon)
+
+When the official image is published to Docker Hub:
+
+```bash
+docker run -p 8501:8501 yourdockerhubusername/llm-streamlit-app
+```
+
+> ✅ Make sure Ollama is running separately or include it in your orchestration setup.
 
 ---
 
@@ -102,17 +102,38 @@ Then go to [http://localhost:8501](http://localhost:8501)
 
 ```
 llm-streamlit-app/
-├── .env.example
-├── .env                  # (Not tracked)
-├── requirements.txt
-├── README.md
 ├── src/
 │   ├── app.py
-│   ├── config.py
-│   └── ollama_runner.py
-├── .gitignore
-└── LICENSE
+│   ├── config/
+│   │   └── config.py
+│   ├── services/
+│   │   └── ollama_service.py
+│   └── tests/
+│       └── test_ollama_service.py
+├── .env.example
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+├── README.md
+└── .gitignore
 ```
+
+---
+
+## 🧪 Testing
+
+```bash
+pytest
+```
+
+---
+
+## 🛠 Roadmap
+
+- [ ] Streamed responses
+- [ ] Chat history
+- [ ] Model selector
+- [ ] Hosted Docker image support
 
 ---
 
@@ -120,18 +141,8 @@ llm-streamlit-app/
 
 MIT License. Use freely, modify responsibly.
 
-
----
-
-## 🛠 Next Ideas (Coming Soon)
-
-- [ ] Streamed responses
-- [ ] Dockerization
-- [ ] Model switching
-- [ ] Chat history
-
 ---
 
 ## 💬 Feedback?
 
-Feel free to open issues or contribute improvements. Star ⭐ the repo if this helped!
+Star ⭐ the repo or open an issue — contributions welcome!
