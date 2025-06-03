@@ -24,16 +24,17 @@ class OllamaClient:
         except requests.RequestException:
             return False
 
-    def query_model(self, prompt: str) -> str:
-        """Send a prompt to the model and get a response."""
+    def query_model(self, prompt: str, context: list = []) -> str:
+        """Send a structured chat history to the model using the /api/chat endpoint."""
         try:
+            messages = context + [{"role": "user", "content": prompt}]
             response = requests.post(
-                f"{self.base_url}/api/generate",
-                json={"prompt": prompt, "model": self.model, "stream": False},
+                f"{self.base_url}/api/chat",
+                json={"model": self.model, "messages": messages, "stream": False},
                 timeout=30
             )
             response.raise_for_status()
-            return response.json().get("response", "No response returned.")
+            return response.json().get("message", {}).get("content", "No response returned.")
         except requests.RequestException as e:
-            logging.error(f"Ollama query failed: {e}")
+            logging.error(f"Ollama chat query failed: {e}")
             return f"Error: {e}"

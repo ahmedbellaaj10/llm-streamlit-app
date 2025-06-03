@@ -31,9 +31,20 @@ else:
         # Store user message
         st.session_state.chat_history.append({"role": "user", "content": prompt})
 
+        # Build structured message context
+        system_prompt = {
+            "role": "system",
+            "content": "You are a helpful AI assistant. Be concise, clear, and polite."
+        }
+
+        context = [system_prompt] + [
+            {"role": msg["role"], "content": msg["content"]}
+            for msg in st.session_state.chat_history if msg["role"] in ["user", "assistant"]
+        ]
+
         # Show loading and get response
         with st.spinner("Generating response..."):
-            response = ollama.query_model(prompt)
+            response = ollama.query_model(prompt=prompt, context=context)
 
         # Store assistant response
         st.session_state.chat_history.append({"role": "assistant", "content": response})

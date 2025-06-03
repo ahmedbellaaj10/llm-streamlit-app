@@ -1,100 +1,95 @@
 # 🧠 LLM Streamlit App with Ollama
 
-This project is a clean local chat interface powered by [Streamlit](https://streamlit.io/) and [Ollama](https://ollama.com/). It lets you run open-source LLMs like `mistral:7b` or `llama3` entirely offline through three flexible methods: local, Docker, or prebuilt image.
+A clean and portable local chat app powered by [Streamlit](https://streamlit.io/) and [Ollama](https://ollama.com/), letting you run open-source large language models like `mistral:7b` or `gemma3:1b` entirely offline. Use it locally or via Docker.
 
 ---
 
 ## 🚀 Features
 
-- ✅ Streamlit UI for prompt-response chat
-- ✅ Class-based service abstraction
-- ✅ `.env` configuration
-- ✅ Docker support
-- ✅ Unit testing with `pytest`
+* ✅ Modern Streamlit UI for chatting with LLMs
+* ✅ Ollama service layer abstraction for flexibility
+* ✅ Easy `.env` configuration (no hardcoded values)
+* ✅ Docker support for containerized workflows
+* ✅ Unit tests (`pytest`) for reliability
 
 ---
 
 ## 📦 Requirements
 
-- Python 3.8+ (for local usage)
-- [Ollama installed](https://ollama.com/download) and accessible in terminal
-- Docker + Docker Compose (for containerized usage)
-- Ollama model pulled locally (e.g., `mistral:7b`)
+* **For local use**: Python 3.8+ and [Ollama installed](https://ollama.com/download)
+* **For Docker**: [Docker](https://docs.docker.com/get-docker/)
+* At least one Ollama model pulled locally (e.g., `mistral:7b`, `gemma3:1b`, etc.)
+
+To pull a model:
 
 ```bash
-ollama pull mistral:7b
+ollama pull gemma3:1b
 ```
 
 ---
 
-## 🛠️ Setup Options
+## 🛠️ Setup & Usage
 
 ### 🔹 Option 1: Run Locally
 
-#### 1. Clone the repository
+**1. Clone the repository**
 
 ```bash
 git clone https://github.com/ahmedbellaaj10/llm-streamlit-app.git
 cd llm-streamlit-app
 ```
 
-#### 2. Create and configure `.env`
+**2. Create your `.env` configuration**
 
 ```bash
 cp .env.example .env
 ```
 
-Set values like:
+Edit `.env` to set your desired model and URL:
 
 ```
-OLLAMA_MODEL_NAME=mistral:7b
-OLLAMA_URL=http://localhost:11434
+OLLAMA_MODEL_NAME="gemma3:1b"
+OLLAMA_URL="http://localhost:11434"
 ```
 
-#### 3.Make sure Ollama is running:
+**3. Make sure Ollama is running and your model is loaded**
+
 ```bash
-ollama run mistral:7b
+ollama run gemma3:1b
 ```
 
-#### 4. Install dependencies & run the app
+**4. Install dependencies and launch the app**
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate      # or .venv\Scripts\Activate.ps1 on Windows
+source .venv/bin/activate        # On Windows: .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 streamlit run src/app.py
 ```
 
-Make sure Ollama is running:
-```bash
-ollama run mistral:7b
-```
+Then open [http://localhost:8501](http://localhost:8501) in your browser.
 
 ---
 
-### 🔹 Option 2: Run with Docker Compose
+### 🔹 Option 2: Run with Docker
 
-Ensure Docker and Docker Compose are installed.
+Make sure Docker is installed, then build and run the container:
 
 ```bash
-docker-compose up --build
+# Build the Docker image
+docker build -t llm-streamlit-app .
+
+# Run the container
+docker run -p 8501:8501 llm-streamlit-app
 ```
 
-This will:
-- Start the Ollama server
-- Start the Streamlit app at [http://localhost:8501](http://localhost:8501)
+This will launch the Streamlit web UI at [http://localhost:8501](http://localhost:8501)
 
 ---
 
-### 🔹 Option 3: Run with Prebuilt Docker Image (Coming Soon)
+### 🔹 Option 3: Run from Prebuilt Docker Image (Coming Soon!)
 
-When the official image is published to Docker Hub:
-
-```bash
-docker run -p 8501:8501 yourdockerhubusername/llm-streamlit-app
-```
-
-> ✅ Make sure Ollama is running separately or include it in your orchestration setup.
+The project will soon be available as a pre-built Docker image on Docker Hub. Once published, you'll be able to run it with a single command. Stay tuned for updates!
 
 ---
 
@@ -111,9 +106,10 @@ llm-streamlit-app/
 │   └── tests/
 │       └── test_ollama_service.py
 ├── .env.example
+├── .env
 ├── requirements.txt
 ├── Dockerfile
-├── docker-compose.yml
+├── entrypoint.sh
 ├── README.md
 └── .gitignore
 ```
@@ -122,18 +118,20 @@ llm-streamlit-app/
 
 ## 🧪 Testing
 
+Run all unit tests using:
+
 ```bash
 pytest
 ```
 
 ---
 
-## 🛠 Roadmap
+## 🛠️ Roadmap
 
-- [ ] Streamed responses
-- [ ] Chat history
-- [ ] Model selector
-- [ ] Hosted Docker image support
+* [ ] Streamed/gradual responses
+* [ ] Persistent chat history
+* [ ] Model selector in UI
+* [ ] Hosted Docker image & one-click cloud launch
 
 ---
 
@@ -143,6 +141,11 @@ MIT License. Use freely, modify responsibly.
 
 ---
 
-## 💬 Feedback?
+## 💬 Feedback & Contributions
 
-Star ⭐ the repo or open an issue — contributions welcome!
+Star ⭐ the repo or [open an issue](https://github.com/ahmedbellaaj10/llm-streamlit-app/issues) — contributions are always welcome!
+
+---
+
+**Questions?**
+If you run into issues or have ideas, [open a discussion](https://github.com/ahmedbellaaj10/llm-streamlit-app/discussions) or ping me on GitHub.

@@ -7,4 +7,5 @@ def get_env_variables():
     url = os.getenv("OLLAMA_URL")
     if not model or not url:
         raise EnvironmentError("OLLAMA_MODEL_NAME or OLLAMA_URL not set in .env")
+    print(f"Debug: config.py reading OLLAMA_MODEL_NAME as: {model}")
     return model, url
