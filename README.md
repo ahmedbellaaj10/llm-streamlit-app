@@ -144,8 +144,3 @@ MIT License. Use freely, modify responsibly.
 ## 💬 Feedback & Contributions
 
 Star ⭐ the repo or [open an issue](https://github.com/ahmedbellaaj10/llm-streamlit-app/issues) — contributions are always welcome!
-
----
-
-**Questions?**
-If you run into issues or have ideas, [open a discussion](https://github.com/ahmedbellaaj10/llm-streamlit-app/discussions) or ping me on GitHub.
