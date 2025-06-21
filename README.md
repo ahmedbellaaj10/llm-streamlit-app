@@ -110,21 +110,23 @@ No manual setup, no configuration needed - just one command, wait for environmen
 
 ## 📁 Project Structure
 
+```
 llm-streamlit-app/
 ├── src/
-│ ├── app.py
-│ ├── config/
-│ │ └── config.py
-│ ├── services/
-│ │ └── ollama_service.py
-│ └── tests/
-│ └── test_ollama_service.py
+│   ├── app.py
+│   ├── config/
+│   │   └── config.py
+│   ├── services/
+│   │   └── ollama_service.py
+│   └── tests/
+│       └── test_ollama_service.py
 ├── config.toml
 ├── requirements.txt
 ├── Dockerfile
 ├── entrypoint.sh
 ├── README.md
 └── .gitignore
+```
 
 
 ---
