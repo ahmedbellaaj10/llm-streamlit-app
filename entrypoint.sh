@@ -1,19 +1,20 @@
 #!/bin/sh
+set -e
 
-# Load environment variables from .env
-export $(grep -v '^#' .env | xargs)
+echo "🔧 Loading configuration..."
+MODEL_NAME=$(python3 -c "from src.config.config import get_config; print(get_config().model_name)")
+OLLAMA_URL=$(python3 -c "from src.config.config import get_config; print(get_config().url)")
 
-echo "🔧 Starting Ollama server..."
+echo "🚀 Starting Ollama server..."
 ollama serve &
 
-# Wait until Ollama server is up
-until curl -sf "${OLLAMA_URL}/api/tags" > /dev/null; do
-  echo "Waiting for Ollama server to be ready at $OLLAMA_URL..."
+echo "⏳ Waiting for Ollama server to be ready..."
+until curl -sf "$OLLAMA_URL/api/tags" > /dev/null 2>&1; do
   sleep 1
 done
 
-echo "🧠 Running the model: $OLLAMA_MODEL_NAME"
-ollama run "$OLLAMA_MODEL_NAME" &
+echo "📦 Pulling model: $MODEL_NAME"
+ollama pull "$MODEL_NAME"
 
-echo "🚀 Launching Streamlit app..."
-streamlit run app.py
+echo "🌐 Starting Streamlit application..."
+cd src && streamlit run app.py

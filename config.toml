@@ -1,0 +1,3 @@
+[ollama]
+model_name = "gemma3:1b"
+url = "http://localhost:11434" 

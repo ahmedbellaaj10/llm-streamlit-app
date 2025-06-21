@@ -8,7 +8,7 @@ A clean and portable local chat app powered by [Streamlit](https://streamlit.io/
 
 * ✅ Modern Streamlit UI for chatting with LLMs
 * ✅ Ollama service layer abstraction for flexibility
-* ✅ Easy `.env` configuration (no hardcoded values)
+* ✅ Clean TOML configuration with Pydantic validation
 * ✅ Docker support for containerized workflows
 * ✅ Unit tests (`pytest`) for reliability
 
@@ -16,8 +16,8 @@ A clean and portable local chat app powered by [Streamlit](https://streamlit.io/
 
 ## 📦 Requirements
 
-* **For local use**: Python 3.8+ and [Ollama installed](https://ollama.com/download)
-* **For Docker**: [Docker](https://docs.docker.com/get-docker/)
+* **For local use**: Python 3.11+ and [Ollama installed](https://ollama.com/download)
+* **For Docker**: [Docker](https://docs.docker.com/get-docker/) and **at least 7GB free disk space**
 * At least one Ollama model pulled locally (e.g., `mistral:7b`, `gemma3:1b`, etc.)
 
 To pull a model:
@@ -39,23 +39,22 @@ git clone https://github.com/ahmedbellaaj10/llm-streamlit-app.git
 cd llm-streamlit-app
 ```
 
-**2. Create your `.env` configuration**
+**2. Configuration is already set up**
+
+The app uses `config.toml` for configuration:
+
+```toml
+[ollama]
+model_name = "gemma3:1b"
+url = "http://localhost:11434"
+```
+
+You can edit this file to change the model or URL as needed.
+
+**3. Start Ollama server**
 
 ```bash
-cp .env.example .env
-```
-
-Edit `.env` to set your desired model and URL:
-
-```
-OLLAMA_MODEL_NAME="gemma3:1b"
-OLLAMA_URL="http://localhost:11434"
-```
-
-**3. Make sure Ollama is running and your model is loaded**
-
-```bash
-ollama run gemma3:1b
+ollama serve
 ```
 
 **4. Install dependencies and launch the app**
@@ -83,36 +82,64 @@ docker build -t llm-streamlit-app .
 docker run -p 8501:8501 llm-streamlit-app
 ```
 
-This will launch the Streamlit web UI at [http://localhost:8501](http://localhost:8501)
+This will automatically:
+- Start the Ollama server
+- Pull the configured model
+- Launch the Streamlit web UI at [http://localhost:8501](http://localhost:8501)
+
+**Note**: First run requires ~7GB disk space and may take 3-5 minutes to download and set up everything.
 
 ---
 
-### 🔹 Option 3: Run from Prebuilt Docker Image (Coming Soon!)
+### 🔹 Option 3: Run from Prebuilt Docker Image
 
-The project will soon be available as a pre-built Docker image on Docker Hub. Once published, you'll be able to run it with a single command. Stay tuned for updates!
+The easiest way to get started! Simply pull and run the pre-built Docker image:
+
+```bash
+docker run -p 8501:8501 ahmedbellaaj10/llm-streamlit-app
+```
+
+That's it! The container will automatically:
+- Start the Ollama server
+- Pull the configured model (gemma3:1b)
+- Launch the Streamlit web UI at [http://localhost:8501](http://localhost:8501)
+
+No manual setup, no configuration needed - just one command, wait for environment to be ready (this might take some time) and you're ready to chat with your local LLM!
 
 ---
 
 ## 📁 Project Structure
 
-```
 llm-streamlit-app/
 ├── src/
-│   ├── app.py
-│   ├── config/
-│   │   └── config.py
-│   ├── services/
-│   │   └── ollama_service.py
-│   └── tests/
-│       └── test_ollama_service.py
-├── .env.example
-├── .env
+│ ├── app.py
+│ ├── config/
+│ │ └── config.py
+│ ├── services/
+│ │ └── ollama_service.py
+│ └── tests/
+│ └── test_ollama_service.py
+├── config.toml
 ├── requirements.txt
 ├── Dockerfile
 ├── entrypoint.sh
 ├── README.md
 └── .gitignore
+
+
+---
+
+## ⚙️ Configuration
+
+The app uses a clean TOML configuration file (`config.toml`) with Pydantic validation:
+
+```toml
+[ollama]
+model_name = "gemma3:1b"  # The Ollama model to use
+url = "http://localhost:11434"  # Ollama server URL
 ```
+
+**Available models**: Any model available in Ollama (e.g., `mistral:7b`, `llama3.2:1b`, `qwen3:0.6b`)
 
 ---
 
