@@ -157,10 +157,10 @@ pytest
 
 ## 🛠️ Roadmap
 
+* [x] Hosted Docker image & one-click cloud launch
 * [ ] Streamed/gradual responses
 * [ ] Persistent chat history
 * [ ] Model selector in UI
-* [ ] Hosted Docker image & one-click cloud launch
 
 ---
 
